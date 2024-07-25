@@ -1,5 +1,5 @@
 import { getAllPetsService, getPetByID, createPet, updatePet, deletePet } from "../service/pet.service.js";
-import { Pet } from "../../model/Pet.model.js"
+import { Pet } from "../model/Pet.model.js"
 
 const getAllPets = async (req, res) => {
   try {
@@ -17,6 +17,7 @@ const getPetByParam = async (req, res) => {
     res.status(200).json({ pet });
   } catch (error) {
     console.error("Erro no controller getPetsByParam", error);
+    res.status(404).json('sem pets com esse id')
   }
 };
 
@@ -24,7 +25,7 @@ const createNewPet = async (req, res) => {
   try {
     const { name, age, species } = req.body
     const newPet = new Pet(name, age, species)
-    createPet(newPet)
+    await createPet(newPet)
     res.status(201).json({ newPet })
   } catch (error) {
     console.error('erro no controller createNewPet', error)
@@ -36,22 +37,22 @@ const deletePetByParam = async (req, res) => {
   try {
     const { id } = req.params
     const deletedPet = await deletePet(id)
-    return deletedPet
+    res.status(200).json({ deletedPet })
   } catch (error) {
     console.error('erro no controller deletePetByParam', error)
   }
 }
 
-const updatePet = async (req, res) => {
+const editPetByBody = async (req, res) => {
   try {
     const { id, name, age, species } = req.body
     const editedPet = { id, name, age, species }
     const response = await updatePet(editedPet)
-    return response 
+    res.status(201).json({ editedPet })
   } catch (error) {
     console.log('erro no controller updatePet', error)
   }
 }
 
 
-export { getAllPets, getPetByParam, createNewPet, updatePet };
+export { getAllPets, getPetByParam, createNewPet, editPetByBody, deletePetByParam};
