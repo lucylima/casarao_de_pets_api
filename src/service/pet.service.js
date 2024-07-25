@@ -20,23 +20,27 @@ const getPetByID = async (id) => {
 
 const createPet = async (pet) => {
   try {
-    const { title, description, duration } = video;
-    await sql`insert into videos (id, title, description, duration) 
-      VALUES (${videoId}, ${title}, ${description}, ${duration})`;
-  } catch (error) {}
+    const { id, name, age, species } = pet;
+    await sql`insert into pets (id, name, age, species) 
+      VALUES (${id}, ${name}, ${age}, ${species})`;
+  } catch (error) {
+    console.error('erro no serviço createPet', error)
+  }
 };
 
-const updatePet = async (id, pet) => {
+const updatePet = async (pet) => {
   try {
-    const { title, description, duration } = video;
-    await sql`update videos set title = ${title}, description = ${description}, duration = ${duration} WHERE id = ${id} `;
+    const { id, name, age, species } = pet;
+    await sql`update pets set name = ${name}, age = ${age}, species = ${species} WHERE id = ${id} `;
   } catch (error) {}
 };
 
 const deletePet = async (id) => {
   try {
-    await sql`delete from videos where id = ${id}`;
+    const pet = await sql`select * from pets where id = ${id}`
+    await sql`delete from pets where id = ${id}`
+    return { pet }
   } catch (error) {}
 };
 
-export { getAllPetsService, getPetByID }
+export { getAllPetsService, getPetByID, createPet, updatePet, deletePet}
