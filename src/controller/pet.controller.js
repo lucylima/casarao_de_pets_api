@@ -1,10 +1,3 @@
-import {
-  getAllPetsService,
-  getPetByID,
-  createPet,
-  updatePet,
-  deletePet,
-} from "../service/pet.service.js";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -14,7 +7,7 @@ const getAllPets = async (req, res) => {
     const pets = await prisma.pet.findMany();
     res.json(pets);
   } catch (error) {
-    console.error("Erro no serviço de getPet", error);
+    res.status(500).json({ error });
   }
 };
 
@@ -41,22 +34,27 @@ const createNewPet = async (req, res) => {
         name,
         age,
         species,
-        ownerID
+        ownerID,
       },
     });
     res.status(201).json(createdPet);
   } catch (error) {
-    res.status(500).json("erro no controller createNewPet", error);
+    res.status(500).json("erro ao criar pet");
   }
 };
 
 const deletePetByParam = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedPet = await deletePet(id);
-    res.status(200).json({ deletedPet });
+    const deletedPet = await prisma.pet.delete({
+      where: {
+        id: id,
+      }
+    });
+    res.status(200).json(deletedPet);
   } catch (error) {
     console.error("erro no controller deletePetByParam", error);
+    res.status(500).json({ error });
   }
 };
 

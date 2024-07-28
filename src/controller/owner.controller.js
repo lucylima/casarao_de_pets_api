@@ -23,7 +23,7 @@ const getOwners = async (req, res) => {
     const allOwners = await prisma.owner.findMany();
     res.status(200).json(allOwners);
   } catch (error) {
-    res.status(500).json("erro ao obter todos os donos");
+    res.status(404).json("erro ao obter todos os donos");
   }
 };
 
@@ -37,9 +37,28 @@ const getOwnerByParam = async (req, res) => {
     });
     res.status(200).json(owner);
   } catch (error) {
-    res.status(500).json("erro ao encontrar dono por id")
+    res.status(404).json("erro ao encontrar dono por id")
   }
 };
+
+const editOwner = async (req, res) => {
+  try {
+    const { id, name, cpf, cellphone } = req.body
+    const editedOwner = await prisma.owner.update({
+      where: {
+        id: id
+      },
+      data: {
+        name: name,
+        cpf: cpf,
+        cellphone: cellphone
+      }
+    })
+    res.status(200).json(editedOwner)
+  } catch (error) {
+    
+  }
+}
 
 const deleteOwner = async (req, res) => {
   try {
@@ -55,4 +74,4 @@ const deleteOwner = async (req, res) => {
   }
 };
 
-export { createNewOwner, getOwners, getOwnerByParam, deleteOwner };
+export { createNewOwner, getOwners, getOwnerByParam, deleteOwner, editOwner };
