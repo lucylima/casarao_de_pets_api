@@ -1,4 +1,4 @@
-import { sql } from '../db.js'
+import { sql } from '../database/db.js'
 
 const getAllPetsService = async () => {
   try {

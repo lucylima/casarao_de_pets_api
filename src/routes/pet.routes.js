@@ -3,7 +3,7 @@
   
   const petRouter = Router()
 
-  petRouter.get("/getAllPets", getAllPets)
+  petRouter.get("/getPet", getAllPets)
   petRouter.get("/getPet/:id", getPetByParam) 
   petRouter.post("/sendPet", createNewPet) //body
   petRouter.delete("/deletePet/:id", deletePetByParam) //param

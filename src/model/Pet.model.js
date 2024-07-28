@@ -6,6 +6,7 @@ class Pet {
     this.name = name;
     this.age = age;
     this.species = species;
+    this.ownerID = this.ownerID
   }
 }
 

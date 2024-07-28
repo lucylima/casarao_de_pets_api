@@ -47,7 +47,7 @@ const editPetByBody = async (req, res) => {
   try {
     const { id, name, age, species } = req.body
     const editedPet = { id, name, age, species }
-    const response = await updatePet(editedPet)
+    await updatePet(editedPet)
     res.status(201).json({ editedPet })
   } catch (error) {
     console.log('erro no controller updatePet', error)

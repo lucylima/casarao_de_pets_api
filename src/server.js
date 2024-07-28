@@ -1,6 +1,8 @@
 import express from 'express'
+import { Prisma, PrismaClient } from '@prisma/client'
 import { petRouter } from './routes/pet.routes.js'
 
+const prisma = new PrismaClient()
 const app = express()
 const port = 1721
 
