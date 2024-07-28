@@ -1,10 +1,12 @@
 import { getAllPetsService, getPetByID, createPet, updatePet, deletePet } from "../service/pet.service.js";
-import { Pet } from "../model/Pet.model.js"
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 const getAllPets = async (req, res) => {
   try {
-    const getPets = await getAllPetsService();
-    res.status(200).json(getPets);
+    const pets = await prisma.pet.findMany()
+    res.json(pets)
   } catch (error) {
     console.error("Erro no serviço de getPet", error);
   }
@@ -12,9 +14,13 @@ const getAllPets = async (req, res) => {
 
 const getPetByParam = async (req, res) => {
   try {
-    const petID = req.params.id;
-    const pet = await getPetByID(petID);
-    res.status(200).json({ pet });
+    const { petID } = req.params
+    const selectedPet = await prisma.pet.findUnique({
+      where: {
+        id: petID
+      }
+    })
+    res.status(200).json(selectedPet)
   } catch (error) {
     console.error("Erro no controller getPetsByParam", error);
     res.status(404).json('sem pets com esse id')
@@ -23,15 +29,19 @@ const getPetByParam = async (req, res) => {
 
 const createNewPet = async (req, res) => {
   try {
-    const { name, age, species } = req.body
-    const newPet = new Pet(name, age, species)
-    await createPet(newPet)
-    res.status(201).json({ newPet })
+    const { name, age, species, ownerID } = req.body
+    const createdPet = await prisma.pet.create({
+      data: {
+        name, 
+        age,
+        species,
+        ownerID
+      }
+    })
   } catch (error) {
     console.error('erro no controller createNewPet', error)
   }
 }
-
 
 const deletePetByParam = async (req, res) => {
   try {

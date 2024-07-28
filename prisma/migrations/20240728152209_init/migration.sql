@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Pet" (
-    "id" TEXT NOT NULL,
+    "id" CHAR(36) NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "age" INTEGER NOT NULL,
     "species" VARCHAR(100) NOT NULL,
