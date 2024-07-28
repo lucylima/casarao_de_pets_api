@@ -12,14 +12,14 @@ model Pet {
   name     String @db.VarChar(100)
   age      Int
   species  String @db.VarChar(100)
-  owner_id String @db.Char(36)
+  owner_id String @unique @db.Char(36)
   owner    Owner  @relation(fields: [owner_id], references: [id])
 }
 
 model Owner {
   id        String @id @default(uuid()) @db.Char(36)
   name      String @db.VarChar(100)
-  cpf       String @db.Char(11)
+  cpf       String @unique @db.Char(11)
   cellphone String @db.Char(9)
-  Pet       Pet[]
+  Pet       Pet?
 }
