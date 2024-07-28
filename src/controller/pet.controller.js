@@ -34,7 +34,7 @@ const createNewPet = async (req, res) => {
         name,
         age,
         species,
-        ownerID,
+        owner_id: ownerID
       },
     });
     res.status(201).json(createdPet);
@@ -61,9 +61,17 @@ const deletePetByParam = async (req, res) => {
 const editPetByBody = async (req, res) => {
   try {
     const { id, name, age, species } = req.body;
-    const editedPet = { id, name, age, species };
-    await updatePet(editedPet);
-    res.status(201).json({ editedPet });
+    const editedPet = await prisma.pet.update({
+      where: {
+        id: id
+      },
+      data: {
+        name,
+        age,
+        species
+      }
+    })
+    res.status(201).json(editedPet);
   } catch (error) {
     console.log("erro no controller updatePet", error);
   }
