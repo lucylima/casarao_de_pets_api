@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import {
-  getAllPets,
+  getPets,
   findPetById,
   createNewPet,
   editPet,
@@ -11,7 +11,7 @@ import {
 
 const petRouter = Router()
 
-petRouter.get('/pets', getAllPets)
+petRouter.get('/pets', getPets)
 petRouter.get('/pet/:id', findPetById)
 petRouter.post('/pet/new', createNewPet)
 petRouter.delete('/pet/delete/:id', deletePet)

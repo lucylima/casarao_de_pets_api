@@ -1,18 +1,18 @@
-import { Router } from "express";
+import { Router } from 'express'
 import {
-  createNewOwner,
+  createOwner,
   getOwners,
-  getOwnerByParam,
+  findOwnerByCpf,
   deleteOwner,
-  editOwner,
-} from "../controller/owner.controller.js";
+  editOwner
+} from '../controller/owner.controller.js'
 
-const ownerRouter = Router();
+const ownerRouter = Router()
 
-ownerRouter.get("/getOwners", getOwners);
-ownerRouter.get("/getOwners/:id", getOwnerByParam);
-ownerRouter.post("/newOwner", createNewOwner);
-ownerRouter.delete("/deleteOwner/:id", deleteOwner);
-ownerRouter.put("/editOwner", editOwner);
+ownerRouter.get('/owners', getOwners)
+ownerRouter.get('/owner/:cpf', findOwnerByCpf)
+ownerRouter.post('/owner/new', createOwner)
+ownerRouter.delete('/owner/delete/:cpf', deleteOwner)
+ownerRouter.put('/owner/edit/:cpf', editOwner)
 
-export { ownerRouter };
+export { ownerRouter }

@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const getAllPets = async (req, res) => {
+const getPets = async (req, res) => {
   try {
     const pets = await prisma.pets.findMany()
     return res.status(200).json({ pets })
@@ -96,7 +96,7 @@ const adoptPet = async (req, res) => {
 }
 
 export {
-  getAllPets,
+  getPets,
   findPetById,
   createNewPet,
   editPet,
