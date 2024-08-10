@@ -50,32 +50,39 @@ const findOwnerByCpf = async (req, res) => {
 
 const editOwner = async (req, res) => {
   try {
-    const { id, name, cpf, cellphone } = req.body
+    const { id } = req.params
+    const { name, cpf, cellphone } = req.body
     const editedOwner = await prisma.owners.update({
-      where: {
-        id: id
-      },
+      where: { id },
       data: {
-        name: name,
-        cpf: cpf,
-        cellphone: cellphone
+        name,
+        cpf,
+        cellphone
       }
     })
-    res.status(200).json(editedOwner)
-  } catch (error) {}
+    if (editedOwner) {
+      return res.status(200).json({ editedOwner })
+    } else {
+      return res.status(404).json('404 not found')
+    }
+  } catch (error) {
+    return res.status(400).json({ error })
+  }
 }
 
 const deleteOwner = async (req, res) => {
   try {
     const { id } = req.params
-    const deletedOwner = await prisma.owner.delete({
-      where: {
-        id: id
-      }
+    const deletedOwner = await prisma.owners.delete({
+      where: { id }
     })
-    res.status(200).json(deletedOwner)
+    if (deletedOwner) {
+      return res.status(200).json({ deletedOwner })
+    } else {
+      return res.status(404).json('404 not found')
+    }
   } catch (error) {
-    res.status(500).json('erro ao deletar dono')
+    res.status(400).json({ error })
   }
 }
 

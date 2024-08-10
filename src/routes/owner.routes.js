@@ -12,7 +12,7 @@ const ownerRouter = Router()
 ownerRouter.get('/owners', getOwners)
 ownerRouter.get('/owner/:cpf', findOwnerByCpf)
 ownerRouter.post('/owner/new', createOwner)
-ownerRouter.delete('/owner/delete/:cpf', deleteOwner)
-ownerRouter.put('/owner/edit/:cpf', editOwner)
+ownerRouter.delete('/owner/delete/:id', deleteOwner)
+ownerRouter.put('/owner/edit/:id', editOwner)
 
 export { ownerRouter }
