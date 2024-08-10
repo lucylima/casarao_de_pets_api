@@ -1,86 +1,105 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 const getAllPets = async (req, res) => {
   try {
-    const pets = await prisma.pet.findMany();
-    res.json(pets);
+    const pets = await prisma.pets.findMany()
+    return res.status(200).json({ pets })
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(400).json({ error })
   }
-};
+}
 
-const getPetByParam = async (req, res) => {
+const findPetById = async (req, res) => {
   try {
-    const { petID } = req.params;
-    const selectedPet = await prisma.pet.findUnique({
-      where: {
-        id: petID,
-      },
-    });
-    res.status(200).json(selectedPet);
+    const { id } = req.params
+    const pet = await prisma.pets.findUnique({
+      where: { id }
+    })
+    if (pet) {
+      return res.status(200).json({ pet })
+    } else {
+      return res.status(404).json({ error: '404 not found' })
+    }
   } catch (error) {
-    console.error("Erro no controller getPetsByParam", error);
-    res.status(404).json("sem pets com esse id");
+    return res.status(404).json({ error })
   }
-};
+}
 
 const createNewPet = async (req, res) => {
   try {
-    const { name, age, species, ownerID } = req.body;
-    const createdPet = await prisma.pet.create({
+    const { name, age, species, kennel } = req.body
+    const createdPet = await prisma.pets.create({
       data: {
         name,
         age,
         species,
-        owner_id: ownerID
-      },
-    });
-    res.status(201).json(createdPet);
-  } catch (error) {
-    res.status(500).json("erro ao criar pet");
-  }
-};
-
-const deletePetByParam = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedPet = await prisma.pet.delete({
-      where: {
-        id: id,
+        kennel_id: kennel
       }
-    });
-    res.status(200).json(deletedPet);
+    })
+    return res.status(201).json({ createdPet })
   } catch (error) {
-    console.error("erro no controller deletePetByParam", error);
-    res.status(500).json({ error });
+    return res.status(400).json({ error })
   }
-};
+}
 
-const editPetByBody = async (req, res) => {
+const deletePet = async (req, res) => {
   try {
-    const { id, name, age, species } = req.body;
-    const editedPet = await prisma.pet.update({
+    const { id } = req.params
+    const deletedPet = await prisma.pets.delete({
+      where: { id }
+    })
+    return res.status(200).json({ deletedPet })
+  } catch (error) {
+    return res.status(400).json({ error })
+  }
+}
+
+const editPet = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { name, age, species, kennel } = req.body
+    const editedPet = await prisma.pets.update({
+      where: { id },
+      data: {
+        name,
+        age,
+        species,
+        kennel_id: kennel
+      }
+    })
+    return res.status(200).json({ editedPet })
+  } catch (error) {
+    return res.status(400).json({ error })
+  }
+}
+
+const findAdoptedPets = async (req, res) => {}
+
+const adoptPet = async (req, res) => {
+  try {
+    const { id, ownerID } = req.body
+    const result = await prisma.pet.update({
       where: {
         id: id
       },
       data: {
-        name,
-        age,
-        species
+        owner_id: ownerID,
+        adoptedStatus: true
       }
     })
-    res.status(201).json(editedPet);
+    res.status(200).json(result)
   } catch (error) {
-    console.log("erro no controller updatePet", error);
+    res.status(500).json({ error })
   }
-};
+}
 
 export {
   getAllPets,
-  getPetByParam,
+  findPetById,
   createNewPet,
-  editPetByBody,
-  deletePetByParam,
-};
+  editPet,
+  deletePet,
+  adoptPet
+}

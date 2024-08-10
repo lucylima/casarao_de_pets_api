@@ -1,9 +1,0 @@
-run = "npm run dev"
-modules = ["nodejs-20"]
-
-[deployment]
-run = ["sh", "-c", "npm run dev"]
-
-[[ports]]
-localPort = 1721
-externalPort = 80

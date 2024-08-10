@@ -3,7 +3,7 @@ import { petRouter } from './routes/pet.routes.js'
 import { ownerRouter } from './routes/owner.routes.js'
 
 const app = express()
-const port = 1721
+const port = process.env.PORT
 
 app.use(express.json())
 app.use(petRouter)
